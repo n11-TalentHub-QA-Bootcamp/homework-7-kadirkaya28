@@ -2,11 +2,6 @@
 FROM kshivaprasad/java:1.8
 #Step 1 : Install the pre-requisite
 RUN apt-get update
-#RUN apt-get install -y libatspi2.0-0 libasound2 libcups2  libatk1.0-0 libdrm2 libcairo2
-
-#RUN apt-get install -y libgconf2-4 libnss3-1d libxss1  libatk1.0-0 libdrm2 libcairo2
-#RUN  apt-get install -y libappindicator3-1 fonts-liberation libatk-bridge2.0-0
-#RUN apt-get install libcurl3
 RUN apt-get install -y curl
 RUN apt-get install -y p7zip \
     p7zip-full \
@@ -18,19 +13,18 @@ RUN apt-get install -y p7zip \
 #Version numbers
 ARG FIREFOX_VERSION=78.0.2
 ARG CHROME_VERSION=83.0.4103.116
-ARG CHROMDRIVER_VERSION=83.0.4103.39
+ARG CHROMDRIVER_VERSION=97.0.4692.71
 ARG FIREFOXDRIVER_VERSION=0.29.0
 
 #Step 2: Install Chrome
-RUN curl http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_$CHROME_VERSION-1_amd64.deb -o /chrome.deb
-RUN dpkg -i /chrome.deb
-RUN rm /chrome.deb
+RUN apt-get install wget
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+RUN apt-get install ./google-chrome*.deb --yes
 #Step 3: Install chromedriver for Selenium
-RUN mkdir -p /app/bin
-RUN curl https://chromedriver.storage.googleapis.com/$CHROMDRIVER_VERSION/chromedriver_linux64.zip -o /tmp/chromedriver.zip \
-    && unzip /tmp/chromedriver.zip -d /app/bin/ \
-    && rm /tmp/chromedriver.zip
-RUN chmod +x /app/bin/chromedriver
+RUN apt install wget -y
+RUN wget https://chromedriver.storage.googleapis.com/97.0.4692.71/chromedriver_linux64.zip
+RUN unzip chromedriver_linux64.zip -d /bin
+RUN cd bin && chmod +x chromedriver
 #Step 4 : Install firefox
 RUN wget --no-verbose -O /tmp/firefox.tar.bz2 https://download-installer.cdn.mozilla.net/pub/firefox/releases/$FIREFOX_VERSION/linux-x86_64/en-US/firefox-$FIREFOX_VERSION.tar.bz2 \
   && bunzip2 /tmp/firefox.tar.bz2 \
@@ -38,10 +32,13 @@ RUN wget --no-verbose -O /tmp/firefox.tar.bz2 https://download-installer.cdn.moz
   && mv /firefox /opt/firefox-$FIREFOX_VERSION \
   && ln -s /opt/firefox-$FIREFOX_VERSION/firefox /usr/bin/firefox
 #Step 5: Install Geckodriver
+RUN apt install wget -y
 RUN wget https://github.com/mozilla/geckodriver/releases/download/v$FIREFOXDRIVER_VERSION/geckodriver-v$FIREFOXDRIVER_VERSION-linux64.tar.gz
 RUN tar -xvzf geckodriver-v0.29.0-linux64.tar.gz
-RUN cp geckodriver /bin/geckodriver
-RUN chmod +x /bin/geckodriver
+RUN chmod +x geckodriver
+RUN mv geckodriver /bin
+RUN apt install firefox -y
+RUN export MOZ_HEADLESS=1
 #Step 6: Install Maven
 # 1- Define Maven version
 ARG MAVEN_VERSION=3.6.3

@@ -10,11 +10,21 @@ public class HomePageTestCases  {
 	@BeforeMethod
 	public void beforeMethod()
 	{
-		googleHomepage.launchBrowserWithFirefox();
+		googleHomepage.launchBrowser();
 	}
 	
 	@Test
 	public void searchGoogle()
+	{
+		googleHomepage.openGoogleURL();
+		googleHomepage.checkSearchBoxIsDisplayed();;
+		googleHomepage.checkGoogleSearchButtonIsDisplayed();
+		googleHomepage.checkImFeelingLuckyButtonIsDisplayed();
+
+	}
+
+	@Test
+	public void searchMe()
 	{
 		googleHomepage.openGoogleURL();
 		googleHomepage.checkSearchBoxIsDisplayed();;

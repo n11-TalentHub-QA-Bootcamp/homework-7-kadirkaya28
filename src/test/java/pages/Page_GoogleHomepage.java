@@ -10,7 +10,7 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 public class Page_GoogleHomepage extends Page_BasePage {
 
 	public void launchBrowser() {
-		System.setProperty("webdriver.chrome.driver","/app/bin/chromedriver");
+		System.setProperty("webdriver.chrome.driver","/bin/chromedriver");
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--headless");
 		options.addArguments("--no-sandbox");
@@ -39,11 +39,11 @@ public class Page_GoogleHomepage extends Page_BasePage {
 		firefoxDockerOptions.addArguments("--height=1080");
 		driver = new FirefoxDriver(firefoxDockerOptions);
 	}
-	
+
 	public void openGoogleURL() {
 		driver.get("http://www.google.com");
 	}
-		
+
 	public void checkSearchBoxIsDisplayed() {
 		if(driver.findElement(By.name("q")).isDisplayed()) {
 			System.out.println("Search text box is displayed");
@@ -51,17 +51,17 @@ public class Page_GoogleHomepage extends Page_BasePage {
 			System.out.println("Search text box is NOT displayed");
 		}
 	}
-	
+
 	public void checkGoogleSearchButtonIsDisplayed() {
-		if(driver.findElement(By.xpath("//div[@class='FPdoLc VlcLAe']//input[@value=\"Google'da Ara\"]")).isDisplayed()) {
+		if(driver.findElement(By.xpath("/html/body/div[1]/div[3]/form/div[1]/div[1]/div[3]/center/input[1]")).isDisplayed()) {
 			System.out.println("Google'da Ara button is displayed");
 		} else {
 			System.out.println("Google'da Ara button is NOT displayed");
 		}
 	}
-	
+
 	public void checkImFeelingLuckyButtonIsDisplayed() {
-		if(driver.findElement(By.xpath("//div[@class='FPdoLc VlcLAe']//input[@value='Kendimi Şanslı Hissediyorum']")).isDisplayed()) {
+		if(driver.findElement(By.xpath("/html/body/div[1]/div[3]/form/div[1]/div[1]/div[3]/center/input[2]")).isDisplayed()) {
 			System.out.println("I'm Kendimi Şanslı Hissediyorum button is displayed");
 		} else {
 			System.out.println("I'm Kendimi Şanslı Hissediyorum button is NOT displayed");
